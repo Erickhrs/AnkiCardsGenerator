@@ -1,10 +1,6 @@
 let input = document.getElementById("input");
 let content;
-<<<<<<< HEAD
-let i= 0;
-=======
 let i = 0;
->>>>>>> 22fb014 (web scrapping ENG-RU)
 let x;
 let result = [];
 const alphaC = /[\u0400-\u04FF]/;
@@ -31,11 +27,7 @@ input.addEventListener("input", (event) => {
 
 
 function generate() {
-<<<<<<< HEAD
-  let i= 0
-=======
   let i = 0
->>>>>>> 22fb014 (web scrapping ENG-RU)
   let ql = content.match(/\n/g);
   let count = ql.length;
   let valuesTxt = [];
@@ -62,21 +54,13 @@ function generate() {
 }
 
 function AlphabetValidator(array) {
-<<<<<<< HEAD
-  let i= 0
-  //erro linha em branco 
-  for (i = 0; i < array.length; i++) {
-    if (!alpha.test(array[i]  || alphaC.test(array[i]))) {
-=======
   let i = 0
   //erro linha em branco 
   for (i = 0; i < array.length; i++) {
-    if (!alpha.test(array[i] || alphaC.test(array[i]))) {
->>>>>>> 22fb014 (web scrapping ENG-RU)
+    if (array[i].trim() === "") {
       alert(`ERRO: LINHA ${i + 1} EM BRANCO`)
     }
   }
-
   if (alphaC.test(array[0])) {
     //russo
     return true;
@@ -88,11 +72,7 @@ function AlphabetValidator(array) {
 }
 
 function typeValidator(value) {
-<<<<<<< HEAD
-  let j= 0
-=======
   let j = 0
->>>>>>> 22fb014 (web scrapping ENG-RU)
   if (value.includes(" ")) {
     //frase
     for (j = 0; j <= 8; j++) {
@@ -115,23 +95,13 @@ function typeValidator(value) {
 }
 
 function englishGenerator(array) {
-<<<<<<< HEAD
-  let j= 0
-=======
   let j = 0
->>>>>>> 22fb014 (web scrapping ENG-RU)
   //ERRO DUAS LINGUAS
   for (j = 0; j < array.length; j++) {
     if (alphaC.test(array[j])) {
       alert(`ERRO: DUAS LÍNGUAS NO MESMO ARQUIVO TXT`)
     }
   }
-<<<<<<< HEAD
-}
-
-function russianGenerator(array) {
-  let j= 0
-=======
   ////////////////
   let arrayId = result.indexOf(array[1]);
   let ID = result[arrayId]
@@ -164,15 +134,12 @@ function russianGenerator(array) {
 
 function russianGenerator(array) {
   let j = 0
->>>>>>> 22fb014 (web scrapping ENG-RU)
   //ERRO DUAS LINGUAS
   for (j = 0; j < array.length; j++) {
     if (alpha.test(array[j])) {
       alert(`ERRO: DUAS LÍNGUAS NO MESMO ARQUIVO TXT`)
     }
   }
-<<<<<<< HEAD
-=======
 
   let arrayId = result.indexOf(array[1]);
   let ID = result[arrayId]
@@ -193,5 +160,4 @@ function russianGenerator(array) {
     console.log(sentences)
   }
 
->>>>>>> 22fb014 (web scrapping ENG-RU)
 }
