@@ -33,7 +33,6 @@ function generate() {
   let valuesTxt = [];
   //passa tudo pra array
   valuesTxt = content.split(/\r\n/)
-  console.log(valuesTxt)
   //valida o tipo de alfabeto (c-l)
   //valida se é frase ou não (f-p)
   if (AlphabetValidator(valuesTxt)) {
@@ -75,7 +74,7 @@ function typeValidator(value) {
   let j = 0
   if (value.includes(" ")) {
     //frase
-    for (j = 0; j <= 8; j++) {
+    for (j = 1; j <= 3; j++) {
       result.push(value)
       result.push("f")
       result.push("-")
@@ -84,7 +83,7 @@ function typeValidator(value) {
     }
   } else {
     //palavra
-    for (j = 0; j <= 8; j++) {
+    for (j = 1; j <= 3; j++) {
       result.push(value)
       result.push("p")
       result.push("-")
@@ -102,34 +101,54 @@ function englishGenerator(array) {
       alert(`ERRO: DUAS LÍNGUAS NO MESMO ARQUIVO TXT`)
     }
   }
-  ////////////////
-  let arrayId = result.indexOf(array[1]);
-  let ID = result[arrayId]
-  const cors_anywhere = "https://cors-anywhere.herokuapp.com/"
-  let target = `https://sentencedict.com/${ID}.html`
-  let url = (cors_anywhere + target);
 
-  //faz uma solicitação para a url e retorna o response
-  //pega a resposta e transforma em algum formato (.text) para trabalhar com o conteudo
-  //o código passa esse texto para uma função chamada scraping() com o tipo de conteúdo "text/html".
-  //.catch para caso dê algum erro na cadeira ele acione e diga qual é problema
-  fetch(url).then(response => response.text())
-    .then(result => scraping(result, "text/html"))
-    .catch(error => console.error("ERRO: " + error));
-
-  //function recebendo código HTML e o tipo do conteúdo
-  //API domparser converte uma string contendo código HTML ou XML em um objeto (parar navegar e manipular).
-  //depois pegamos todos os elementos divs dentro do id #all e passamos pra um objeto
-  //depois passo objeto pra uma array e o .map percorre tudo e pega apenas o conteudo de cada div
-  //(ser der algum problema abra o link do cors e clique no botão demo lá)
-  function scraping(string_html, content_type) {
-    let parser = new DOMParser();
-    let doc = parser.parseFromString(string_html, content_type);
-    let divweb = doc.querySelectorAll("#all div")
-
-    let sentences = Array.from(divweb).map(Element => Element.textContent);
-    console.log(sentences)
+  //GERANDO A PARTIR DE PALAVRAS
+  let indexes = [];
+  for (i = 0; i < result.length; i++) {
+    if (result[i] === "p") {
+      indexes.push(i)
+    }
   }
+  for (i = 0; i < indexes.length; i += 3) {
+    let ID = (i == 0 ? result[0] : result[indexes[i] - 1])
+    const cors_anywhere = "https://cors-anywhere.herokuapp.com/"
+    let target = `https://sentencedict.com/${ID}.html`
+    let url = (cors_anywhere + target);
+
+    //faz uma solicitação para a url e retorna o response
+    //pega a resposta e transforma em algum formato (.text) para trabalhar com o conteudo
+    //o código passa esse texto para uma função chamada scraping() com o tipo de conteúdo "text/html".
+    //.catch para caso dê algum erro na cadeira ele acione e diga qual é problema
+
+    fetch(url).then(response => response.text())
+      .then(result => scraping(result, "text/html"))
+      .catch(error => console.error("ERRO: " + error));
+
+    //function recebendo código HTML e o tipo do conteúdo
+    //API domparser converte uma string contendo código HTML ou XML em um objeto (parar navegar e manipular).
+    //depois pegamos todos os elementos divs dentro do id #all e passamos pra um objeto
+    //depois passo objeto pra uma array e o .map percorre tudo e pega apenas o conteudo de cada div
+    //(ser der algum problema abra o link do cors e clique no botão demo lá)
+    function scraping(string_html, content_type) {
+      let parser = new DOMParser();
+      let doc = parser.parseFromString(string_html, content_type);
+      let divweb = doc.querySelectorAll("#all div")
+
+      let sentences = Array.from(divweb).map(Element => Element.textContent);
+      let randomN = Math.floor(Math.random() * 10) + 1;
+      //x = sentences.indexOf(randomN);
+      console.log(randomN)
+      console.log(sentences.indexOf(String(randomN)))
+      //result[i + 1] = sentences[x];
+    }
+
+  }
+
+
+
+
+
+
 }
 
 function russianGenerator(array) {
