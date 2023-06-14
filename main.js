@@ -1,8 +1,8 @@
 let input = document.getElementById("input");
 let content;
-let i = 0;
-let x;
-let result = [];
+var i, j, y = 0;
+var x;
+var result = [];
 const alphaC = /[\u0400-\u04FF]/;
 const alpha = /[a-zA-Z]/;
 
@@ -94,7 +94,8 @@ function typeValidator(value) {
 }
 
 function englishGenerator(array) {
-  let j = 0
+  let sentences = [];
+  j = 0
   //ERRO DUAS LINGUAS
   for (j = 0; j < array.length; j++) {
     if (alphaC.test(array[j])) {
@@ -109,6 +110,7 @@ function englishGenerator(array) {
       indexes.push(i)
     }
   }
+
   for (i = 0; i < indexes.length; i += 3) {
     let ID = (i == 0 ? result[0] : result[indexes[i] - 1])
     const cors_anywhere = "https://cors-anywhere.herokuapp.com/"
@@ -119,9 +121,8 @@ function englishGenerator(array) {
     //pega a resposta e transforma em algum formato (.text) para trabalhar com o conteudo
     //o código passa esse texto para uma função chamada scraping() com o tipo de conteúdo "text/html".
     //.catch para caso dê algum erro na cadeira ele acione e diga qual é problema
-
     fetch(url).then(response => response.text())
-      .then(result => scraping(result, "text/html"))
+      .then(result => scraping(result, "text/html", j))
       .catch(error => console.error("ERRO: " + error));
 
     //function recebendo código HTML e o tipo do conteúdo
@@ -129,30 +130,35 @@ function englishGenerator(array) {
     //depois pegamos todos os elementos divs dentro do id #all e passamos pra um objeto
     //depois passo objeto pra uma array e o .map percorre tudo e pega apenas o conteudo de cada div
     //(ser der algum problema abra o link do cors e clique no botão demo lá)
-    function scraping(string_html, content_type) {
-      let parser = new DOMParser();
-      let doc = parser.parseFromString(string_html, content_type);
-      let divweb = doc.querySelectorAll("#all div")
-
-      let sentences = Array.from(divweb).map(Element => Element.textContent);
-      let randomN = Math.floor(Math.random() * 10) + 1;
-      //x = sentences.indexOf(randomN);
-      console.log(randomN)
-      console.log(sentences.indexOf(String(randomN)))
-      //result[i + 1] = sentences[x];
-    }
-
   }
+  function scraping(string_html, content_type) {
+    let parser = new DOMParser();
+    let doc = parser.parseFromString(string_html, content_type);
+    let divweb = doc.querySelectorAll("#all div")
 
+    let sentence = Array.from(divweb).map(Element => Element.textContent);
+    sentences.push(sentence);
+  }
+  console.log(sentences[0][0])
+  packer()
+  function packer(){
 
-
-
-
-
+    x = indexes[0]
+    for (i=0;i<3;i++) {
+      //result[x+1] = sentences[1][2];
+      x++
+    }
+  }
 }
 
+
+
+
+
+
+
 function russianGenerator(array) {
-  let j = 0
+  j = 0
   //ERRO DUAS LINGUAS
   for (j = 0; j < array.length; j++) {
     if (alpha.test(array[j])) {
