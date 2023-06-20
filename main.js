@@ -5,6 +5,7 @@ var x;
 var result = [];
 const alphaC = /[\u0400-\u04FF]/;
 const alpha = /[a-zA-Z]/;
+var sentences = [];
 
 //chamado quando um evento específico acontece.
 input.addEventListener("input", (event) => {
@@ -23,8 +24,6 @@ input.addEventListener("input", (event) => {
   }
 
 });
-
-
 
 function generate() {
   let i = 0
@@ -94,7 +93,7 @@ function typeValidator(value) {
 }
 
 function englishGenerator(array) {
-  let sentences = [];
+  let wpcounter = 0;
   j = 0
   //ERRO DUAS LINGUAS
   for (j = 0; j < array.length; j++) {
@@ -110,7 +109,6 @@ function englishGenerator(array) {
       indexes.push(i)
     }
   }
-
   for (i = 0; i < indexes.length; i += 3) {
     let ID = (i == 0 ? result[0] : result[indexes[i] - 1])
     const cors_anywhere = "https://cors-anywhere.herokuapp.com/"
@@ -138,17 +136,22 @@ function englishGenerator(array) {
 
     let sentence = Array.from(divweb).map(Element => Element.textContent);
     sentences.push(sentence);
+    wpcounter++
+    console.log("carregando...")
+    if (wpcounter==((result.length/5)/3)){
+      packer()
+    }
   }
-  console.log(sentences[0][0])
-  packer()
   function packer(){
-
     x = indexes[0]
     for (i=0;i<3;i++) {
       //result[x+1] = sentences[1][2];
       x++
     }
+    console.log(sentences)
+   console.log(sentences[0][4])
   }
+   
 }
 
 
