@@ -143,13 +143,17 @@ function englishGenerator(array) {
     }
   }
   function packer(){
-    x = indexes[0]
-    for (i=0;i<3;i++) {
-      //result[x+1] = sentences[1][2];
-      x++
+    j = 0;
+    for (i=0;i<indexes.length;i+=3) {
+      x = indexes[i]
+      for (y=0;y<3;y++){
+        result[x+1] = sentences[j][y]
+        x+=5
+      }
+      j++
     }
-    console.log(sentences)
-   console.log(sentences[0][4])
+
+    console.log("pronto!")
   }
    
 }
