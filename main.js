@@ -138,7 +138,7 @@ function englishGenerator(array) {
     sentences.push(sentence);
     wpcounter++
     console.log("carregando...")
-    if (wpcounter==((result.length/5)/3)){
+    if (wpcounter==(indexes.length/3)){
       packer()
     }
   }
