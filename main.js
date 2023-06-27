@@ -109,26 +109,38 @@ function englishGenerator(array) {
       indexes.push(i)
     }
   }
-  for (i = 0; i < indexes.length; i += 3) {
-    let ID = (i == 0 ? result[0] : result[indexes[i] - 1])
-    const cors_anywhere = "https://cors-anywhere.herokuapp.com/"
-    let target = `https://sentencedict.com/${ID}.html`
-    let url = (cors_anywhere + target);
 
-    //faz uma solicitação para a url e retorna o response
-    //pega a resposta e transforma em algum formato (.text) para trabalhar com o conteudo
-    //o código passa esse texto para uma função chamada scraping() com o tipo de conteúdo "text/html".
-    //.catch para caso dê algum erro na cadeira ele acione e diga qual é problema
-    fetch(url).then(response => response.text())
-      .then(result => scraping(result, "text/html", j))
-      .catch(error => console.error("ERRO: " + error));
-
-    //function recebendo código HTML e o tipo do conteúdo
-    //API domparser converte uma string contendo código HTML ou XML em um objeto (parar navegar e manipular).
-    //depois pegamos todos os elementos divs dentro do id #all e passamos pra um objeto
-    //depois passo objeto pra uma array e o .map percorre tudo e pega apenas o conteudo de cada div
-    //(ser der algum problema abra o link do cors e clique no botão demo lá)
+  function esperarCincoSegundos() {
+    return new Promise(resolve => {
+      setTimeout(resolve, 2000); // Espera 5 segundos (5000 milissegundos)
+    });
   }
+
+  async function meuLoop() {
+    for (i = 0; i < indexes.length; i += 3) {
+      let ID = (i == 0 ? result[0] : result[indexes[i] - 1])
+      const cors_anywhere = "https://cors-anywhere.herokuapp.com/"
+      let target = `https://sentencedict.com/${ID}.html`
+      let url = (cors_anywhere + target);
+
+      //faz uma solicitação para a url e retorna o response
+      //pega a resposta e transforma em algum formato (.text) para trabalhar com o conteudo
+      //o código passa esse texto para uma função chamada scraping() com o tipo de conteúdo "text/html".
+      //.catch para caso dê algum erro na cadeira ele acione e diga qual é problema
+      await fetch(url).then(response => response.text())
+        .then(result => scraping(result, "text/html", j))
+        .catch(error => console.error("ERRO: " + error));
+
+      await esperarCincoSegundos();
+    }
+  }
+  meuLoop();
+
+  //function recebendo código HTML e o tipo do conteúdo
+  //API domparser converte uma string contendo código HTML ou XML em um objeto (parar navegar e manipular).
+  //depois pegamos todos os elementos divs dentro do id #all e passamos pra um objeto
+  //depois passo objeto pra uma array e o .map percorre tudo e pega apenas o conteudo de cada div
+  //(ser der algum problema abra o link do cors e clique no botão demo lá)
   function scraping(string_html, content_type) {
     let parser = new DOMParser();
     let doc = parser.parseFromString(string_html, content_type);
@@ -138,30 +150,27 @@ function englishGenerator(array) {
     sentences.push(sentence);
     wpcounter++
     console.log("carregando...")
-    if (wpcounter==(indexes.length/3)){
-      packer()
+    if (wpcounter == (indexes.length / 3)) {
+      console.log("pronto!")
+     packer();
     }
   }
-  function packer(){
-    j = 0;
-    for (i=0;i<indexes.length;i+=3) {
-      x = indexes[i]
-      for (y=0;y<3;y++){
-        result[x+1] = sentences[j][y]
-        x+=5
-      }
-      j++
-    }
 
-    console.log("pronto!")
-  }
+  function packer() {
+      j = 0;
+      for (i = 0; i < indexes.length; i += 3) {
+        x = indexes[i]
+        for (y = 0; y < 3; y++) {
+          console.log(sentences[j][y])
+          result[x + 1] = sentences[j][y]
+          x += 5
+        }
+        j++
+    }
    
+    
+  }
 }
-
-
-
-
-
 
 
 function russianGenerator(array) {
