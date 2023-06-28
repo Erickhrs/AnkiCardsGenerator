@@ -152,53 +152,97 @@ function englishGenerator(array) {
     console.log("carregando...")
     if (wpcounter == (indexes.length / 3)) {
       console.log("pronto!")
-     packer();
+      packer();
     }
   }
 
   function packer() {
-      j = 0;
-      for (i = 0; i < indexes.length; i += 3) {
-        x = indexes[i]
-        for (y = 0; y < 3; y++) {
-          console.log(sentences[j][y])
-          result[x + 1] = sentences[j][y]
-          x += 5
-        }
-        j++
+    j = 0;
+    for (i = 0; i < indexes.length; i += 3) {
+      x = indexes[i]
+      for (y = 0; y < 3; y++) {
+        console.log(sentences[j][y])
+        result[x + 1] = sentences[j][y]
+        x += 5
+      }
+      j++
     }
-   
-    
+
+
   }
 }
 
 
+
+
+
+
 function russianGenerator(array) {
+  let wpcounter = 0;
   j = 0
   //ERRO DUAS LINGUAS
   for (j = 0; j < array.length; j++) {
-    if (alpha.test(array[j])) {
+    if (alphaC.test(array[j])) {
       alert(`ERRO: DUAS LÍNGUAS NO MESMO ARQUIVO TXT`)
     }
   }
 
-  let arrayId = result.indexOf(array[1]);
-  let ID = result[arrayId]
-  const cors_anywhere = "https://cors-anywhere.herokuapp.com/"
-  let target = `https://sinonim.org/p/${ID}#f`
-  let url = (cors_anywhere + target);
+  //GERANDO A PARTIR DE PALAVRAS
+  let indexes = [];
+  for (i = 0; i < result.length; i++) {
+    if (result[i] === "p") {
+      indexes.push(i)
+    }
+  }
 
-  fetch(url).then(response => response.text())
-    .then(result => scraping(result, "text/html"))
-    .catch(error => console.error("ERRO: " + error));
+  function esperarCincoSegundos() {
+    return new Promise(resolve => {
+      setTimeout(resolve, 2000); // Espera 5 segundos (5000 milissegundos)
+    });
+  }
+
+  async function meuLoop() {
+    for (i = 0; i < indexes.length; i += 3) {
+      let ID = (i == 0 ? result[0] : result[indexes[i] - 1])
+      const cors_anywhere = "https://cors-anywhere.herokuapp.com/"
+      let target = `https://sinonim.org/p/${ID}#f`
+      let url = (cors_anywhere + target);
+
+
+      await fetch(url).then(response => response.text())
+        .then(result => scraping(result, "text/html", j))
+        .catch(error => console.error("ERRO: " + error));
+
+      await esperarCincoSegundos();
+    }
+  }
+  meuLoop();
 
   function scraping(string_html, content_type) {
     let parser = new DOMParser();
     let doc = parser.parseFromString(string_html, content_type);
     let divweb = doc.querySelectorAll(".ulPred li")
 
-    let sentences = Array.from(divweb).map(Element => Element.textContent);
-    console.log(sentences)
+    let sentence = Array.from(divweb).map(Element => Element.textContent);
+    sentences.push(sentence);
+    wpcounter++
+    console.log("carregando...")
+    if (wpcounter == (indexes.length / 3)) {
+      console.log("pronto!")
+      packer();
+    }
   }
 
+  function packer() {
+    j = 0;
+    for (i = 0; i < indexes.length; i += 3) {
+      x = indexes[i]
+      for (y = 0; y < 3; y++) {
+        console.log(sentences[j][y])
+        result[x + 1] = sentences[j][y]
+        x += 5
+      }
+      j++
+    }
+  }
 }
