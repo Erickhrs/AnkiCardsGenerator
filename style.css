@@ -38,3 +38,6 @@ input, button{
 body{
     background-color: rgb(32, 32, 32);
 }
+#b1:hover{
+    background-color: rgb(255, 150, 65);
+}
