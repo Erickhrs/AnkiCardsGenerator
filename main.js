@@ -161,7 +161,6 @@ function englishGenerator(array) {
     for (i = 0; i < indexes.length; i += 3) {
       x = indexes[i]
       for (y = 0; y < 3; y++) {
-        console.log(sentences[j][y])
         result[x + 1] = sentences[j][y]
         x += 5
       }
@@ -174,15 +173,12 @@ function englishGenerator(array) {
 
 
 
-
-
-
 function russianGenerator(array) {
   let wpcounter = 0;
   j = 0
   //ERRO DUAS LINGUAS
   for (j = 0; j < array.length; j++) {
-    if (alphaC.test(array[j])) {
+    if (alpha.test(array[j])) {
       alert(`ERRO: DUAS LÍNGUAS NO MESMO ARQUIVO TXT`)
     }
   }
@@ -238,7 +234,6 @@ function russianGenerator(array) {
     for (i = 0; i < indexes.length; i += 3) {
       x = indexes[i]
       for (y = 0; y < 3; y++) {
-        console.log(sentences[j][y])
         result[x + 1] = sentences[j][y]
         x += 5
       }
