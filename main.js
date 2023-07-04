@@ -121,8 +121,6 @@ function englishGenerator(array) {
   }
 
   async function meuLoop() {
-    console.log(indexesf)
-    console.log(indexesp)
     for (i = 0; i < indexesp.length; i += 3) {
       let ID = (indexesp[i] == 0 ? result[0] : result[indexesp[i] - 1])
       const cors_anywhere = "https://cors-anywhere.herokuapp.com/"
@@ -140,11 +138,11 @@ function englishGenerator(array) {
       await esperarCincoSegundos();
     }
 
-    for (j = 0; j < indexesf.length; j += 3) {
-      let ID = (indexesf[j] == 0 ? result[0] : result[indexesf[j] - 1])
-      const cors_anywhere = "https://cors-anywhere.herokuapp.com/"
-      let target = `https://pt.bab.la/dicionario/ingles-portugues/${ID}`
-      let url = (cors_anywhere + target);
+    for (i = 0; i < indexesf.length; i += 3) {
+      ID = (indexesf[i] == 0 ? result[0] : result[indexesf[i] - 1])
+      cors_anywhere = "https://cors-anywhere.herokuapp.com/"
+      target = `https://context.reverso.net/translation/english-portuguese/${ID}`
+      url = (cors_anywhere + target);
 
       await fetch(url).then(response => response.text())
         .then(result => scrapingf(result, "text/html", j))
@@ -154,6 +152,9 @@ function englishGenerator(array) {
     }
   }
   meuLoop();
+
+
+
 
   //function recebendo código HTML e o tipo do conteúdo
   //API domparser converte uma string contendo código HTML ou XML em um objeto (parar navegar e manipular).
@@ -170,20 +171,26 @@ function englishGenerator(array) {
     wpcounter++
     console.log("carregando...")
     if (wpcounter == (indexesp.length / 3)) {
+      wpcounter = 0;
       console.log("pronto!")
       packerp();
     }
   }
+
+
+
+
+
   function scrapingf(string_html, content_type) {
     let parser = new DOMParser();
     let doc = parser.parseFromString(string_html, content_type);
-    let divweb = doc.querySelectorAll(".dict-source dict-source_examples div")
+    let divweb = doc.querySelectorAll("#examples-content .text")
 
     let sentence = Array.from(divweb).map(Element => Element.textContent);
     sentencesf.push(sentence);
     wpcounter++
     console.log("carregando...")
-    if (wpcounter == (indexesp.length / 3)) {
+    if (wpcounter == (indexesf.length / 3)) {
       console.log("pronto!")
       packerf();
     }
@@ -206,7 +213,7 @@ function englishGenerator(array) {
     for (i = 0; i < indexesf.length; i += 3) {
       x = indexesf[i]
       for (y = 0; y < 3; y++) {
-        result[x + 1] = sentencesf[j][y]
+        result[x + 1] = sentencesf[j][y].replace("\n          ", "")
         x += 5
       }
       j++
