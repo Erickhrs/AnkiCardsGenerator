@@ -178,9 +178,6 @@ function englishGenerator(array) {
   }
 
 
-
-
-
   function scrapingf(string_html, content_type) {
     let parser = new DOMParser();
     let doc = parser.parseFromString(string_html, content_type);
@@ -219,74 +216,123 @@ function englishGenerator(array) {
       j++
     }
   }
+}
 
 
-  function russianGenerator(array) {
-    let wpcounter = 0;
-    j = 0
-    //ERRO DUAS LINGUAS
-    for (j = 0; j < array.length; j++) {
-      if (alpha.test(array[j])) {
-        alert(`ERRO: DUAS LÍNGUAS NO MESMO ARQUIVO TXT`)
-      }
+
+
+
+function russianGenerator(array) {
+  let wpcounter = 0;
+  j = 0
+  //ERRO DUAS LINGUAS
+  for (j = 0; j < array.length; j++) {
+    if (alpha.test(array[j])) {
+      alert(`ERRO: DUAS LÍNGUAS NO MESMO ARQUIVO TXT`)
     }
+  }
 
-    //GERANDO A PARTIR DE PALAVRAS
-    let indexes = [];
-    for (i = 0; i < result.length; i++) {
-      if (result[i] === "p") {
-        indexes.push(i)
-      }
+  let indexesp = [];
+  let indexesf = [];
+  for (i = 0; i < result.length; i++) {
+    if (result[i] === "p") {
+      indexesp.push(i)
     }
-
-    function esperarCincoSegundos() {
-      return new Promise(resolve => {
-        setTimeout(resolve, 2000); // Espera 5 segundos (5000 milissegundos)
-      });
+    else if (result[i] === "f") {
+      indexesf.push(i)
     }
-
-    async function meuLoop() {
-      for (i = 0; i < indexes.length; i += 3) {
-        let ID = (i == 0 ? result[0] : result[indexes[i] - 1])
-        const cors_anywhere = "https://cors-anywhere.herokuapp.com/"
-        let target = `https://sinonim.org/p/${ID}#f`
-        let url = (cors_anywhere + target);
+    else { }
+  }
 
 
-        await fetch(url).then(response => response.text())
-          .then(result => scraping(result, "text/html", j))
-          .catch(error => console.error("ERRO: " + error));
+  function esperarCincoSegundos() {
+    return new Promise(resolve => {
+      setTimeout(resolve, 2000); // Espera 5 segundos (5000 milissegundos)
+    });
+  }
 
-        await esperarCincoSegundos();
-      }
+  async function meuLoop() {
+    for (i = 0; i < indexesp.length; i += 3) {
+      let ID = (indexesp[i] == 0 ? result[0] : result[indexesp[i] - 1])
+      const cors_anywhere = "https://cors-anywhere.herokuapp.com/"
+      let target = `https://sinonim.org/p/${ID}#f`
+      let url = (cors_anywhere + target);
+
+
+      await fetch(url).then(response => response.text())
+        .then(result => scrapingp(result, "text/html", j))
+        .catch(error => console.error("ERRO: " + error));
+
+      await esperarCincoSegundos();
+
     }
-    meuLoop();
+    for (i = 0; i < indexesf.length; i += 3) {
+      ID = (indexesf[i] == 0 ? result[0] : result[indexesf[i] - 1])
+      cors_anywhere = "https://cors-anywhere.herokuapp.com/"
+      target = `https://context.reverso.net/translation/russian-english/${ID}`
+      url = (cors_anywhere + target);
 
-    function scraping(string_html, content_type) {
-      let parser = new DOMParser();
-      let doc = parser.parseFromString(string_html, content_type);
-      let divweb = doc.querySelectorAll(".ulPred li")
+      await fetch(url).then(response => response.text())
+        .then(result => scrapingf(result, "text/html", j))
+        .catch(error => console.error("ERRO: " + error));
+      await esperarCincoSegundos();
+    }
+  }
+  meuLoop();
+  let wpcounterp = 0
+  let wpcounterf = 0
+  function scrapingp(string_html, content_type) {
+    let parser = new DOMParser();
+    let doc = parser.parseFromString(string_html, content_type);
+    let divweb = doc.querySelectorAll(".ulPred li")
 
-      let sentence = Array.from(divweb).map(Element => Element.textContent);
-      sentencesp.push(sentence);
-      wpcounter++
-      console.log("carregando...")
-      if (wpcounter == (indexes.length / 3)) {
+    let sentence = Array.from(divweb).map(Element => Element.textContent);
+    sentencesp.push(sentence);
+    wpcounterp++
+    console.log("carregando...")
+    if (wpcounterp == (indexesp.length / 3)) {
+      console.log("pronto!")
+      packerp();
+    }
+  }
+  function scrapingf(string_html, content_type) {
+    let parser = new DOMParser();
+    let doc = parser.parseFromString(string_html, content_type);
+    let divweb = doc.querySelectorAll("#examples-content .text")
+
+    let sentence = Array.from(divweb).map(Element => Element.textContent);
+    sentencesf.push(sentence);
+    wpcounterf++
+    console.log("carregando...")
+    if (wpcounterf == (indexesf.length / 3)) {
         console.log("pronto!")
-        packer();
-      }
+        packerf();
     }
+  }
 
-    function packer() {
-      j = 0;
-      for (i = 0; i < indexes.length; i += 3) {
-        x = indexes[i]
-        for (y = 0; y < 3; y++) {
-          result[x + 1] = sentencesp[j][y]
-          x += 5
-        }
-        j++
+
+  function packerp() {
+    j = 0;
+    for (i = 0; i < indexesp.length; i += 3) {
+      x = indexesp[i]
+      for (y = 0; y < 3; y++) {
+        result[x + 1] = sentencesp[j][y]
+        x += 5
       }
+      j++
+    }
+  }
+
+  function packerf() {
+    j = 0;
+    for (i = 0; i < indexesf.length; i += 3) {
+      x = indexesf[i]
+      for (y = 0; y < 3; y++) {
+        result[x + 1] = sentencesf[j][y]
+        result[x + 1] = sentencesf[j][y].replace("\n          ", "")
+        x += 5
+      }
+      j++
     }
   }
 }
