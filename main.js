@@ -116,7 +116,7 @@ function englishGenerator(array) {
 
   function esperarCincoSegundos() {
     return new Promise(resolve => {
-      setTimeout(resolve, 2000); // Espera 5 segundos (5000 milissegundos)
+      setTimeout(resolve, 2000); // Espera 2 segundos (5000 milissegundos)
     });
   }
 
@@ -199,6 +199,7 @@ function englishGenerator(array) {
       x = indexesp[i]
       for (y = 0; y < 3; y++) {
         result[x + 1] = sentencesp[j][y]
+        translator(result[x+1], "en", x)
         x += 5
       }
       j++
@@ -211,6 +212,7 @@ function englishGenerator(array) {
       x = indexesf[i]
       for (y = 0; y < 3; y++) {
         result[x + 1] = sentencesf[j][y].replace("\n          ", "")
+        translator(result[x+1], "en", x)
         x += 5
       }
       j++
@@ -317,6 +319,7 @@ function russianGenerator(array) {
       x = indexesp[i]
       for (y = 0; y < 3; y++) {
         result[x + 1] = sentencesp[j][y]
+        translator(result[x+1], "ru", x)
         x += 5
       }
       j++
@@ -330,9 +333,19 @@ function russianGenerator(array) {
       for (y = 0; y < 3; y++) {
         result[x + 1] = sentencesf[j][y]
         result[x + 1] = sentencesf[j][y].replace("\n          ", "")
+        translator(result[x+1], "ru", x)
         x += 5
       }
       j++
     }
   }
+}
+
+function translator (valor, lang, x){
+  fetch(
+    `https://api.mymemory.translated.net/get?q=${valor}!&langpair=${lang}|pt`
+    ).then((res)=>res.json()).then((data)=>{
+      let trad = data.responseData.translatedText;
+      result[x+2] = trad
+    })
 }
