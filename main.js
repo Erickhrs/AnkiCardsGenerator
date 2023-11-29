@@ -7,6 +7,7 @@ const alphaC = /[\u0400-\u04FF]/;
 const alpha = /[a-zA-Z]/;
 var sentencesp = [];
 var sentencesf = [];
+var images = [];
 
 //chamado quando um evento específico acontece.
 input.addEventListener("input", (event) => {
@@ -199,7 +200,7 @@ function englishGenerator(array) {
       x = indexesp[i]
       for (y = 0; y < 3; y++) {
         result[x + 1] = sentencesp[j][y]
-        translator(result[x+1], "en", x)
+        translator(result[x + 1], "en", x)
         x += 5
       }
       j++
@@ -212,7 +213,7 @@ function englishGenerator(array) {
       x = indexesf[i]
       for (y = 0; y < 3; y++) {
         result[x + 1] = sentencesf[j][y].replace("\n          ", "")
-        translator(result[x+1], "en", x)
+        translator(result[x + 1], "en", x)
         x += 5
       }
       j++
@@ -223,6 +224,33 @@ function englishGenerator(array) {
 
 
 
+
+async function imageGenerator(IDIMG) {
+  //for (i = 0; i < result.length; i += 5) { images.push(result[i]) }
+  var resultimg = await useApi(IDIMG);
+  //console.log(resultimg.photos[Math.floor(Math.random(5)*10)].src.medium);
+  return resultimg.photos[Math.floor(Math.random()*3)].src.medium;
+}
+
+
+async function useApi(word) {
+  try {
+    const response = await fetch(`https://api.pexels.com/v1/search?query=${word}`, {
+      method: 'GET',
+      headers: { Authorization: 'j6lfufy3bU92SOgeJ8cxVUUg4K0eU96g7Nm4PFc3uvRZfEt6BeDExpMW' },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+}
 
 function russianGenerator(array) {
   let wpcounter = 0;
@@ -307,8 +335,8 @@ function russianGenerator(array) {
     wpcounterf++
     console.log("carregando...")
     if (wpcounterf == (indexesf.length / 3)) {
-        console.log("pronto!")
-        packerf();
+      console.log("pronto!")
+      packerf();
     }
   }
 
@@ -319,7 +347,7 @@ function russianGenerator(array) {
       x = indexesp[i]
       for (y = 0; y < 3; y++) {
         result[x + 1] = sentencesp[j][y]
-        translator(result[x+1], "ru", x)
+        translator(result[x + 1], "ru", x)
         x += 5
       }
       j++
@@ -333,7 +361,7 @@ function russianGenerator(array) {
       for (y = 0; y < 3; y++) {
         result[x + 1] = sentencesf[j][y]
         result[x + 1] = sentencesf[j][y].replace("\n          ", "")
-        translator(result[x+1], "ru", x)
+        translator(result[x + 1], "ru", x)
         x += 5
       }
       j++
@@ -341,11 +369,19 @@ function russianGenerator(array) {
   }
 }
 
-function translator (valor, lang, x){
-  fetch(
-    `https://api.mymemory.translated.net/get?q=${valor}!&langpair=${lang}|pt`
-    ).then((res)=>res.json()).then((data)=>{
-      let trad = data.responseData.translatedText;
-      result[x+2] = trad
-    })
+
+async function translator(valor, lang, x) {
+  try {
+    const response = await fetch(`https://api.mymemory.translated.net/get?q=${valor}!&langpair=${lang}|pt`);
+    const data = await response.json();
+    
+    let trad = data.responseData.translatedText;
+    result[x + 2] = trad;
+   
+    const imageResult = await imageGenerator(result[x - 1]);
+    result[x+3] = imageResult;
+
+  } catch (error) {
+    console.error('Error:', error);
+  }
 }
