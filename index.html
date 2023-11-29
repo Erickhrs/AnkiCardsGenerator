@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,12 +8,34 @@
     <link rel="stylesheet" href="style.css">
     <title>CARDS GENERATOR</title>
 </head>
+
 <body>
-    <div id="container">
-        <h1 onclick="imageGenerator()">CARDS GENERATOR</h1>
+    <DIV id="infos">
+        <p>&#128065;&#65039;</p>
+        <p>&#128190;</p>
+        <p>&#128294;</p>
+        <p>&#128377;&#65039;</p>
+    </DIV>
+    <div id="messagebox">
+        <p id="message">CARDS GENERATOR BY ERICK ROSA &#127463;&#127479;</p>
+    </div>
+    <div class="container" id="activator_container">
+        <h1>FIRST STEPS</h1>
+        <h2>UNLOCK ACESS TO <a href="https://cors-anywhere.herokuapp.com/" target="_blank"
+                rel="noopener noreferrer">CORS</a></h2>
+        <iframe width="300" height="300" src="https://cors-anywhere.herokuapp.com/" frameborder="0"
+            allowfullscreen></iframe>
+        <h2>YOUR KEY OF <a href="https://www.pexels.com/pt-br/api/" target="_blank">PEXEL API</a></h2>
+        <input type="password" id="inputkey">
+        <button id="btkey">OK</button>
+    </div>
+    <div class="container" id="generator_container">
+        <h1>CARDS GENERATOR</h1>
         <input id="input" type="file">
         <button id="b1" onclick="generate()">OK</button>
     </div>
+
     <script src="/main.js"></script>
 </body>
+
 </html>

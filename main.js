@@ -1,4 +1,5 @@
 let input = document.getElementById("input");
+const btkey = document.getElementById("btkey");
 let content;
 var i, j, y = 0;
 var x;
@@ -22,11 +23,33 @@ input.addEventListener("input", (event) => {
   //quando a leitura terminar vai pegar o resultado e passar pra content
   reader.onload = function (e) {
     content = e.target.result;
-    alert(content)
   }
 
 });
 
+btkey.addEventListener("click", function () {
+  var inputkey = document.getElementById("inputkey");
+  if (inputkey.value!=""){
+    firststepsb()
+    messagebox("system initialized")
+  }
+  else{
+    window.alert("PLEASE, TAKE THE FIRST STEPS PROPERLY")
+  }
+});
+
+function messagebox(x){
+  var message = document.getElementById("message");
+  message.innerHTML = (message.textContent + "<br>" + x + "<br>" );
+}
+
+function firststepsb() {
+  const container1 = document.getElementById("activator_container");
+  const container2 = document.getElementById("generator_container");
+
+  container1.style.display = "none";
+  container2.style.display = "block";
+}
 function generate() {
   let i = 0
   let ql = content.match(/\n/g);
@@ -134,7 +157,7 @@ function englishGenerator(array) {
       //.catch para caso dê algum erro na cadeira ele acione e diga qual é problema
       await fetch(url).then(response => response.text())
         .then(result => scrapingp(result, "text/html", j))
-        .catch(error => console.error("ERRO: " + error));
+        .catch(error => messagebox("ERRO: " + error));
 
       await esperarCincoSegundos();
     }
@@ -147,7 +170,7 @@ function englishGenerator(array) {
 
       await fetch(url).then(response => response.text())
         .then(result => scrapingf(result, "text/html", j))
-        .catch(error => console.error("ERRO: " + error));
+        .catch(error => messagebox("ERRO: " + error));
 
       await esperarCincoSegundos();
     }
@@ -170,10 +193,10 @@ function englishGenerator(array) {
     let sentence = Array.from(divweb).map(Element => Element.textContent);
     sentencesp.push(sentence);
     wpcounter++
-    console.log("carregando...")
+    messagebox("carregando...")
     if (wpcounter == (indexesp.length / 3)) {
       wpcounter = 0;
-      console.log("pronto!")
+      messagebox("pronto!")
       packerp();
     }
   }
@@ -187,9 +210,9 @@ function englishGenerator(array) {
     let sentence = Array.from(divweb).map(Element => Element.textContent);
     sentencesf.push(sentence);
     wpcounter++
-    console.log("carregando...")
+    messagebox("carregando...")
     if (wpcounter == (indexesf.length / 3)) {
-      console.log("pronto!")
+      messagebox("pronto!")
       packerf();
     }
   }
@@ -229,7 +252,7 @@ async function imageGenerator(IDIMG) {
   //for (i = 0; i < result.length; i += 5) { images.push(result[i]) }
   var resultimg = await useApi(IDIMG);
   //console.log(resultimg.photos[Math.floor(Math.random(5)*10)].src.medium);
-  return resultimg.photos[Math.floor(Math.random()*3)].src.medium;
+  return resultimg.photos[Math.floor(Math.random() * 3)].src.medium;
 }
 
 
@@ -247,7 +270,7 @@ async function useApi(word) {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error:', error);
+    messagebox('Error:', error);
     throw error;
   }
 }
@@ -291,7 +314,7 @@ function russianGenerator(array) {
 
       await fetch(url).then(response => response.text())
         .then(result => scrapingp(result, "text/html", j))
-        .catch(error => console.error("ERRO: " + error));
+        .catch(error => messagebox("ERRO: " + error));
 
       await esperarCincoSegundos();
 
@@ -304,7 +327,7 @@ function russianGenerator(array) {
 
       await fetch(url).then(response => response.text())
         .then(result => scrapingf(result, "text/html", j))
-        .catch(error => console.error("ERRO: " + error));
+        .catch(error => messagebox("ERRO: " + error));
       await esperarCincoSegundos();
     }
   }
@@ -319,9 +342,9 @@ function russianGenerator(array) {
     let sentence = Array.from(divweb).map(Element => Element.textContent);
     sentencesp.push(sentence);
     wpcounterp++
-    console.log("carregando...")
+    messagebox("carregando...")
     if (wpcounterp == (indexesp.length / 3)) {
-      console.log("pronto!")
+      messagebox("pronto!")
       packerp();
     }
   }
@@ -333,9 +356,9 @@ function russianGenerator(array) {
     let sentence = Array.from(divweb).map(Element => Element.textContent);
     sentencesf.push(sentence);
     wpcounterf++
-    console.log("carregando...")
+    messagebox("carregando...")
     if (wpcounterf == (indexesf.length / 3)) {
-      console.log("pronto!")
+      messagebox("pronto!")
       packerf();
     }
   }
@@ -374,14 +397,14 @@ async function translator(valor, lang, x) {
   try {
     const response = await fetch(`https://api.mymemory.translated.net/get?q=${valor}!&langpair=${lang}|pt`);
     const data = await response.json();
-    
+
     let trad = data.responseData.translatedText;
     result[x + 2] = trad;
-   
+
     const imageResult = await imageGenerator(result[x - 1]);
-    result[x+3] = imageResult;
+    result[x + 3] = `<img src=${imageResult} alt="image"></img>`;
 
   } catch (error) {
-    console.error('Error:', error);
+    messagebox('Error:', error);
   }
 }
