@@ -16,7 +16,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: white;
-    box-shadow: 0px 0px 20px 0px rgb(133, 129, 129);
+    box-shadow: 0px 0px 20px 0px rgb(201, 201, 201);
 }
 
 #generator_container {
@@ -111,6 +111,14 @@ body {
     background-color: rgb(49, 48, 48);
     padding: 5px;
 }
+#infos p:hover{
+    cursor: pointer;
+    background-color: rgb(58, 57, 57);
+    border-radius: 5px;
+}
+#infos p{
+    margin-top: 26px;
+}
 
 #messagebox {
     border: 1px dotted green;
@@ -118,14 +126,19 @@ body {
     width: 250px;
     height: 250px;
     color: greenyellow;
-    top: 300px;
-    position: absolute;
-    margin: 0px 0px 10px 0px;
+    background-color: rgb(0, 0, 0);
     font-family: Arial, Helvetica, sans-serif;
     font-size: 10px;
     text-align: center;
     scrollbar-width: thin;
     scrollbar-color: transparent transparent;
+    display: none;
+}
+
+#messagebox table {
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 8px;
 }
 
 #messagebox::-webkit-scrollbar {
@@ -134,4 +147,11 @@ body {
 
 #messagebox::-webkit-scrollbar-thumb {
     background-color: transparent;
+}
+
+#containerinfos{
+    display: flex;
+    background-color: rgb(41, 41, 41);
+    width: fit-content;
+    border-radius: 10px;
 }

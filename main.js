@@ -9,6 +9,8 @@ const alpha = /[a-zA-Z]/;
 var sentencesp = [];
 var sentencesf = [];
 var images = [];
+var actionstatus = false;
+var modestatus = false;
 
 //chamado quando um evento específico acontece.
 input.addEventListener("input", (event) => {
@@ -29,18 +31,31 @@ input.addEventListener("input", (event) => {
 
 btkey.addEventListener("click", function () {
   var inputkey = document.getElementById("inputkey");
-  if (inputkey.value!=""){
+  if (inputkey.value != "") {
     firststepsb()
     messagebox("system initialized")
   }
-  else{
+  else {
     window.alert("PLEASE, TAKE THE FIRST STEPS PROPERLY")
   }
 });
 
-function messagebox(x){
-  var message = document.getElementById("message");
-  message.innerHTML = (message.textContent + "<br>" + x + "<br>" );
+function errosvalidator() {
+  if (result[2] === undefined && result[7] === undefined) {
+    messagebox("ERROR CORS SYSTEM(OPEN CONSOLE TO MORE INFOS)")
+  }
+}
+
+function messagebox(x) {
+  //var message = document.getElementById("message");
+  //message.innerHTML = (message.textContent +"<br>" + x + "<br />");
+
+  var newline = document.createElement("tr");
+  var recentaction = document.createElement("td");
+  recentaction.textContent = x;
+  newline.appendChild(recentaction)
+  const list = document.querySelector("#list");
+  list.appendChild(newline);
 }
 
 function firststepsb() {
@@ -51,27 +66,34 @@ function firststepsb() {
   container2.style.display = "block";
 }
 function generate() {
-  let i = 0
-  let ql = content.match(/\n/g);
-  let count = ql.length;
-  let valuesTxt = [];
-  //passa tudo pra array
-  valuesTxt = content.split(/\r\n/)
-  //valida o tipo de alfabeto (c-l)
-  //valida se é frase ou não (f-p)
-  if (AlphabetValidator(valuesTxt)) {
-    //russo
-    for (i = 0; i < valuesTxt.length; i++) {
-      x = typeValidator(valuesTxt[i])
+  if (input.files.length > 0) {
+    let i = 0
+    let ql = content.match(/\n/g);
+    let count = ql.length;
+    let valuesTxt = [];
+    //passa tudo pra array
+    valuesTxt = content.split(/\r\n/)
+    //valida o tipo de alfabeto (c-l)
+    //valida se é frase ou não (f-p)
+    if (AlphabetValidator(valuesTxt)) {
+      //russo
+      for (i = 0; i < valuesTxt.length; i++) {
+        x = typeValidator(valuesTxt[i])
+      }
+      russianGenerator(valuesTxt)
     }
-    russianGenerator(valuesTxt)
+    else {
+      //inglês
+      for (i = 0; i < valuesTxt.length; i++) {
+        x = typeValidator(valuesTxt[i])
+      }
+      englishGenerator(valuesTxt);
+    }
+
   }
   else {
-    //inglês
-    for (i = 0; i < valuesTxt.length; i++) {
-      x = typeValidator(valuesTxt[i])
-    }
-    englishGenerator(valuesTxt);
+    alert("Nenhum arquivo selecionado.");
+    messagebox("ERROR NO FILE")
   }
 
 }
@@ -179,7 +201,6 @@ function englishGenerator(array) {
 
 
 
-
   //function recebendo código HTML e o tipo do conteúdo
   //API domparser converte uma string contendo código HTML ou XML em um objeto (parar navegar e manipular).
   //depois pegamos todos os elementos divs dentro do id #all e passamos pra um objeto
@@ -193,10 +214,10 @@ function englishGenerator(array) {
     let sentence = Array.from(divweb).map(Element => Element.textContent);
     sentencesp.push(sentence);
     wpcounter++
-    messagebox("carregando...")
+    messagebox("loading...")
     if (wpcounter == (indexesp.length / 3)) {
       wpcounter = 0;
-      messagebox("pronto!")
+      messagebox("done!")
       packerp();
     }
   }
@@ -210,9 +231,9 @@ function englishGenerator(array) {
     let sentence = Array.from(divweb).map(Element => Element.textContent);
     sentencesf.push(sentence);
     wpcounter++
-    messagebox("carregando...")
+    messagebox("loading...")
     if (wpcounter == (indexesf.length / 3)) {
-      messagebox("pronto!")
+      messagebox("done!")
       packerf();
     }
   }
@@ -342,9 +363,9 @@ function russianGenerator(array) {
     let sentence = Array.from(divweb).map(Element => Element.textContent);
     sentencesp.push(sentence);
     wpcounterp++
-    messagebox("carregando...")
+    messagebox("loading...")
     if (wpcounterp == (indexesp.length / 3)) {
-      messagebox("pronto!")
+      messagebox("done!")
       packerp();
     }
   }
@@ -356,9 +377,9 @@ function russianGenerator(array) {
     let sentence = Array.from(divweb).map(Element => Element.textContent);
     sentencesf.push(sentence);
     wpcounterf++
-    messagebox("carregando...")
+    messagebox("loading...")
     if (wpcounterf == (indexesf.length / 3)) {
-      messagebox("pronto!")
+      messagebox("done!")
       packerf();
     }
   }
@@ -366,6 +387,7 @@ function russianGenerator(array) {
 
   function packerp() {
     j = 0;
+
     for (i = 0; i < indexesp.length; i += 3) {
       x = indexesp[i]
       for (y = 0; y < 3; y++) {
@@ -406,5 +428,44 @@ async function translator(valor, lang, x) {
 
   } catch (error) {
     messagebox('Error:', error);
+  }
+  errosvalidator();
+}
+
+
+//botões infos
+function actionsbox() {
+  actionstatus = !actionstatus;
+  const messageboxe = document.querySelector("#messagebox");
+  if (actionstatus === false) {
+    messageboxe.style.display = "none"
+   messagebox("actionsbox disabled")
+  }
+  else if (actionstatus === true) {
+    messageboxe.style.display = "block"
+     
+    messagebox("actionsbox activated")
+  }
+}
+
+function mode(){
+  modestatus = !modestatus ;
+  const background = document.body;
+  const infos = document.querySelector("#infos");
+  const containerinfos = document.querySelector("#containerinfos")
+  const container = document.querySelector(".container")
+  if (modestatus  === false) {
+    background.style.backgroundColor = "rgb(32, 32, 32)";
+    infos.style.backgroundColor = "rgb(49, 48, 48)";
+    containerinfos.style.backgroundColor = "rgb(41, 41, 41)";
+    container.style.boxShadow = "0px 0px 20px 0px rgb(201, 201, 201)";
+    messagebox("DARK MODE ACTIVATED")
+  }
+  else if (modestatus  === true) {
+    background.style.backgroundColor = "rgb(242, 233, 233)";
+    infos.style.backgroundColor = "rgb(193, 192, 192)";
+    containerinfos.style.backgroundColor = "rgb(216, 215, 215)";
+    container.style.boxShadow = "0px 0px 20px 0px rgb(29, 28, 28)";
+    messagebox("LIGHT MODE ACTIVATED")
   }
 }
