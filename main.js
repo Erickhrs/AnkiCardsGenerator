@@ -11,7 +11,7 @@ var sentencesf = [];
 var images = [];
 var actionstatus = false;
 var modestatus = false;
-
+var modeview = false;
 //chamado quando um evento específico acontece.
 input.addEventListener("input", (event) => {
   //o arquivo que foi selecionado pelo usuário (0 pq é só o primeiro arquivo)
@@ -34,6 +34,7 @@ btkey.addEventListener("click", function () {
   if (inputkey.value != "") {
     firststepsb()
     messagebox("system initialized")
+    document.querySelector("#containerinfos").style.display = "flex";
   }
   else {
     window.alert("PLEASE, TAKE THE FIRST STEPS PROPERLY")
@@ -439,33 +440,119 @@ function actionsbox() {
   const messageboxe = document.querySelector("#messagebox");
   if (actionstatus === false) {
     messageboxe.style.display = "none"
-   messagebox("actionsbox disabled")
+    messagebox("actionsbox disabled")
   }
   else if (actionstatus === true) {
     messageboxe.style.display = "block"
-     
+
     messagebox("actionsbox activated")
   }
 }
 
-function mode(){
-  modestatus = !modestatus ;
+function mode() {
+  modestatus = !modestatus;
   const background = document.body;
   const infos = document.querySelector("#infos");
   const containerinfos = document.querySelector("#containerinfos")
   const container = document.querySelector(".container")
-  if (modestatus  === false) {
+  if (modestatus === false) {
     background.style.backgroundColor = "rgb(32, 32, 32)";
     infos.style.backgroundColor = "rgb(49, 48, 48)";
     containerinfos.style.backgroundColor = "rgb(41, 41, 41)";
     container.style.boxShadow = "0px 0px 20px 0px rgb(201, 201, 201)";
     messagebox("DARK MODE ACTIVATED")
   }
-  else if (modestatus  === true) {
+  else if (modestatus === true) {
     background.style.backgroundColor = "rgb(242, 233, 233)";
     infos.style.backgroundColor = "rgb(193, 192, 192)";
     containerinfos.style.backgroundColor = "rgb(216, 215, 215)";
     container.style.boxShadow = "0px 0px 20px 0px rgb(29, 28, 28)";
     messagebox("LIGHT MODE ACTIVATED")
+  }
+}
+
+function view() {
+  modeview = !modeview;
+  if (modeview === false) {
+    //document.querySelector("#containerinfos").style.display = "flex"
+    document.querySelector("#generator_container").style.display = "flex"
+    document.querySelector("#activator_container").style.display = "none"
+    document.querySelector("#resultcontainer").style.display = "none"
+    //apagando tabela
+    var resuttable = document.querySelector("#resuttable")
+    var resultcontainer = resuttable.parentNode;
+    resultcontainer.removeChild(resuttable)
+  }
+  else if (modeview === true) {
+    //document.querySelector("#containerinfos").style.display = "none"
+    document.querySelector("#generator_container").style.display = "none"
+    document.querySelector("#activator_container").style.display = "none"
+    document.querySelector("#resultcontainer").style.display = "block"
+    resultScreen()
+  }
+}
+
+function resultScreen() {
+  var novatabela = document.createElement("table");
+  var novalinhaHeader = document.createElement("tr");
+  var th1 = document.createElement("th");
+  var th2 = document.createElement("th");
+  var th3 = document.createElement("th");
+  var th4 = document.createElement("th");
+  var th5 = document.createElement("th");
+  var th6 = document.createElement("th");
+
+  th1.textContent = "INDEX";
+  th2.textContent = "VALUE";
+  th3.textContent = "TYPE";
+  th4.textContent = "FRONT";
+  th5.textContent = "BACK";
+  th6.textContent = "IMAGE";
+
+  novalinhaHeader.appendChild(th1);
+  novalinhaHeader.appendChild(th2);
+  novalinhaHeader.appendChild(th3);
+  novalinhaHeader.appendChild(th4);
+  novalinhaHeader.appendChild(th5);
+  novalinhaHeader.appendChild(th6);
+  novatabela.appendChild(novalinhaHeader)
+  novatabela.id = "resuttable";
+
+  const resultcontainer = document.querySelector("#resultcontainer");
+  resultcontainer.appendChild(novatabela)
+
+
+  for (i = 0; i < result.length; i += 5) {
+    var z = i;
+    //criando os elementos pro html
+    var novalinha = document.createElement("tr");
+    var index = document.createElement("td");
+    var value = document.createElement("td");
+    var type = document.createElement("td");
+    var front = document.createElement("td");
+    var back = document.createElement("td");
+    var image = document.createElement("td");
+
+    //atribuindo valores
+
+    index.textContent = z;
+    value.textContent = result[z];
+    type.textContent = result[z + 1];
+    front.textContent = result[z + 2];
+    back.textContent = result[z + 3];
+    image.textContent = result[z + 4];
+
+    //passando pro tr
+
+    novalinha.appendChild(index);
+    novalinha.appendChild(value);
+    novalinha.appendChild(type);
+    novalinha.appendChild(front);
+    novalinha.appendChild(back);
+    novalinha.appendChild(image);
+
+    //mandando pro html
+    tabela = document.querySelector("#resuttable");
+    tabela.appendChild(novalinha)
   }
 }
