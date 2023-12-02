@@ -67,6 +67,7 @@ function firststepsb() {
   container2.style.display = "block";
 }
 function generate() {
+  actionsbox()
   if (input.files.length > 0) {
     let i = 0
     let ql = content.match(/\n/g);
@@ -540,7 +541,7 @@ function resultScreen() {
     type.textContent = result[z + 1];
     front.textContent = result[z + 2];
     back.textContent = result[z + 3];
-    image.textContent = result[z + 4];
+    image.innerHTML = result[z + 4];
 
     //passando pro tr
 
