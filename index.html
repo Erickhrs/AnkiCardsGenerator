@@ -11,29 +11,31 @@
 <body>
     </DIV>
     <div id="resultcontainer">
-        <h1>&#127803;results&#127803;</h1>
+        <h1 id="titleresult">&#127803;results&#127803;</h1>
         <div id="inputs_containers">
 
-            <input type="number" name="index" placeholder="INDEX" id="indexinp">
+            <input type="number" name="index" placeholder="INDEX" id="indexinp" step="5">
 
-            <input type="text" name="value" placeholder="VALUE">
+            <input type="text" name="value" placeholder="VALUE" id="valueinp">
+
+            <input type="text" name="value" placeholder="TYPE" id="typeinp">
 
         
-            <input type="text" name="front" placeholder="FRONT">
+            <input type="text" name="front" placeholder="FRONT" id="frontinp">
 
         
-            <input type="text" name="back" placeholder="BACK">
+            <input type="text" name="back" placeholder="BACK" id="backinp">
 
            
-            <input type="text" name="image" placeholder="IMAGE">
+            <input type="text" name="image" placeholder="IMAGE" id="imageinp">
 
-            <P>&#9999;&#65039</P>
+            <P onclick="editResult()">&#9999;&#65039</P>
         </div>
 
     </div>
     <div id="containerinfos">
         <DIV id="infos">
-            <p title="VIEW" onclick="view()">&#128065;&#65039;</p>
+            <p id="viewelement"title="VIEW" onclick="view()">&#128065;&#65039;</p>
             <p title="SAVE">&#128190;</p>
             <p title="DARK/LIGHT MODE" onclick="mode()">&#128294;</p>
             <p title="actionsbox" onclick="actionsbox()">&#128377;&#65039;</p>

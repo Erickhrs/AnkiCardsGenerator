@@ -494,66 +494,120 @@ function view() {
 }
 
 function resultScreen() {
-  var novatabela = document.createElement("table");
-  var novalinhaHeader = document.createElement("tr");
-  var th1 = document.createElement("th");
-  var th2 = document.createElement("th");
-  var th3 = document.createElement("th");
-  var th4 = document.createElement("th");
-  var th5 = document.createElement("th");
-  var th6 = document.createElement("th");
 
-  th1.textContent = "INDEX";
-  th2.textContent = "VALUE";
-  th3.textContent = "TYPE";
-  th4.textContent = "FRONT";
-  th5.textContent = "BACK";
-  th6.textContent = "IMAGE";
+  if (result <= 2) { 
+    document.querySelector("#titleresult").innerHTML = "<p>there are no results</p"
+  } else {
+    document.querySelector("#titleresult").innerHTML = "&#127803;results&#127803;"
+    var novatabela = document.createElement("table");
+    var novalinhaHeader = document.createElement("tr");
+    var th1 = document.createElement("th");
+    var th2 = document.createElement("th");
+    var th3 = document.createElement("th");
+    var th4 = document.createElement("th");
+    var th5 = document.createElement("th");
+    var th6 = document.createElement("th");
 
-  novalinhaHeader.appendChild(th1);
-  novalinhaHeader.appendChild(th2);
-  novalinhaHeader.appendChild(th3);
-  novalinhaHeader.appendChild(th4);
-  novalinhaHeader.appendChild(th5);
-  novalinhaHeader.appendChild(th6);
-  novatabela.appendChild(novalinhaHeader)
-  novatabela.id = "resuttable";
+    th1.textContent = "INDEX";
+    th2.textContent = "VALUE";
+    th3.textContent = "TYPE";
+    th4.textContent = "FRONT";
+    th5.textContent = "BACK";
+    th6.textContent = "IMAGE";
 
-  const resultcontainer = document.querySelector("#resultcontainer");
-  resultcontainer.appendChild(novatabela)
+    novalinhaHeader.appendChild(th1);
+    novalinhaHeader.appendChild(th2);
+    novalinhaHeader.appendChild(th3);
+    novalinhaHeader.appendChild(th4);
+    novalinhaHeader.appendChild(th5);
+    novalinhaHeader.appendChild(th6);
+    novatabela.appendChild(novalinhaHeader)
+    novatabela.id = "resuttable";
+
+    const resultcontainer = document.querySelector("#resultcontainer");
+    resultcontainer.appendChild(novatabela)
 
 
-  for (i = 0; i < result.length; i += 5) {
-    var z = i;
-    //criando os elementos pro html
-    var novalinha = document.createElement("tr");
-    var index = document.createElement("td");
-    var value = document.createElement("td");
-    var type = document.createElement("td");
-    var front = document.createElement("td");
-    var back = document.createElement("td");
-    var image = document.createElement("td");
+    for (i = 0; i < result.length; i += 5) {
+      var z = i;
+      //criando os elementos pro html
+      var novalinha = document.createElement("tr");
+      var index = document.createElement("td");
+      var value = document.createElement("td");
+      var type = document.createElement("td");
+      var front = document.createElement("td");
+      var back = document.createElement("td");
+      var image = document.createElement("td");
 
-    //atribuindo valores
+      //atribuindo valores
 
-    index.textContent = z;
-    value.textContent = result[z];
-    type.textContent = result[z + 1];
-    front.textContent = result[z + 2];
-    back.textContent = result[z + 3];
-    image.innerHTML = result[z + 4];
+      index.textContent = z;
+      value.textContent = result[z];
+      type.textContent = result[z + 1];
+      front.textContent = result[z + 2];
+      back.textContent = result[z + 3];
+      image.innerHTML = result[z + 4];
 
-    //passando pro tr
+      //passando pro tr
 
-    novalinha.appendChild(index);
-    novalinha.appendChild(value);
-    novalinha.appendChild(type);
-    novalinha.appendChild(front);
-    novalinha.appendChild(back);
-    novalinha.appendChild(image);
+      novalinha.appendChild(index);
+      novalinha.appendChild(value);
+      novalinha.appendChild(type);
+      novalinha.appendChild(front);
+      novalinha.appendChild(back);
+      novalinha.appendChild(image);
 
-    //mandando pro html
-    tabela = document.querySelector("#resuttable");
-    tabela.appendChild(novalinha)
+      //mandando pro html
+      tabela = document.querySelector("#resuttable");
+      tabela.appendChild(novalinha)
+    }
   }
+
+}
+
+function editResult() {
+  const index = document.querySelector("#indexinp").value;
+  const value = document.querySelector("#valueinp").value;
+  const type = document.querySelector("#typeinp").value;
+  const front = document.querySelector("#frontinp").value;
+  const back = document.querySelector("#backinp").value;
+  const image = document.querySelector("#imageinp").value;
+
+  if (index !== "") {
+    if (value !== "") {
+      result[parseInt(index)] = value;
+      messagebox("VALUE CHANGED")
+    }
+
+    if (type !== "") {
+      result[parseInt(index) + 1] = type;
+      messagebox("TYPE CHANGED")
+    }
+
+    if (front !== "") {
+      result[parseInt(index) + 2] = front;
+      messagebox("FRONT CHANGED")
+    }
+
+    if (back !== "") {
+      result[parseInt(index) + 3] = back;
+      messagebox("BACK CHANGED")
+    }
+
+    if (image !== "") {
+      result[parseInt(index) + 4] = `<img src=${image} alt="image"></img>`
+      messagebox("IMAGE CHANGED")
+    }
+
+    var resuttable = document.querySelector("#resuttable")
+    var resultcontainer = resuttable.parentNode;
+    resultcontainer.removeChild(resuttable)
+
+    resultScreen();
+  }
+  else {
+    alert("CHOOSE THE ROW TO EDIT (INDEX)")
+    messagebox("ERRO - EMPTY INDEX")
+  }
+
 }
