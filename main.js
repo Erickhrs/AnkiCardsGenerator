@@ -12,6 +12,7 @@ var images = [];
 var actionstatus = false;
 var modestatus = false;
 var modeview = false;
+var imgkey ="";
 //chamado quando um evento específico acontece.
 input.addEventListener("input", (event) => {
   //o arquivo que foi selecionado pelo usuário (0 pq é só o primeiro arquivo)
@@ -35,6 +36,7 @@ btkey.addEventListener("click", function () {
     firststepsb()
     messagebox("system initialized")
     document.querySelector("#containerinfos").style.display = "flex";
+    imgkey = document.querySelector("#inputkey").value
   }
   else {
     window.alert("PLEASE, TAKE THE FIRST STEPS PROPERLY")
@@ -275,24 +277,22 @@ async function imageGenerator(IDIMG) {
   //for (i = 0; i < result.length; i += 5) { images.push(result[i]) }
   var resultimg = await useApi(IDIMG);
   //console.log(resultimg.photos[Math.floor(Math.random(5)*10)].src.medium);
-  console.log(IDIMG)
   return resultimg.photos[Math.floor(Math.random() * 3)].src.medium;
 }
 
 
 async function useApi(word) {
-  console.log(word)
   try {
-    const response = await fetch(`https://api.pexels.com/v1/search?query=${word}`, {
+    var response = await fetch(`https://api.pexels.com/v1/search?query=${word}`, {
       method: 'GET',
-      headers: { Authorization: 'j6lfufy3bU92SOgeJ8cxVUUg4K0eU96g7Nm4PFc3uvRZfEt6BeDExpMW' },
+      headers: { Authorization:`${imgkey}`},
     });
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
-    const data = await response.json();
+    var data = await response.json();
     return data;
   } catch (error) {
     messagebox('Error:', error);
@@ -424,7 +424,6 @@ function russianGenerator(array) {
 async function translator(valor, lang, x) {
   try {
     if (lang == "en") {
-      console.log("ENTROU EM RUSSO")
       const response = await fetch(`https://api.mymemory.translated.net/get?q=${valor}!&langpair=${lang}|pt`);
       const data = await response.json();
 
@@ -433,7 +432,6 @@ async function translator(valor, lang, x) {
 
       const imageResult = await imageGenerator(result[x - 1]);
       result[x + 3] = `<img src=${imageResult} alt="image"></img>`;
-      console.log("ENTROU EM INGLES")
     }
     if (lang == "ru") {
       const response = await fetch(`https://api.mymemory.translated.net/get?q=${valor}!&langpair=${lang}|pt`);
@@ -665,11 +663,11 @@ const downloadXLSX = () => {
   wb.SheetNames.push('RESULT');
 
   var dados = [
-    ['Front', 'Back', 'Image'],
+    ['Front', 'Back'],
   ];
   for (i = 0; i < result.length; i += 5) {
     console.log("entrou")
-    var z = [result[i + 2], removeExcla(result[i + 3]), result[i + 4]]
+    var z = [result[i + 2]+ "<br>" + result[i + 4], removeExcla(result[i + 3])]
     dados.push(z)
   }
   console.log(dados)
@@ -677,7 +675,7 @@ const downloadXLSX = () => {
 
   wb.Sheets['RESULT'] = ws;
 
-  XLSX.writeFile(wb, 'RESULTS CARDS GENERATOR.xlsx', { bookType: 'xlsx', type: 'bynary' });
+  XLSX.writeFile(wb, 'RESULTS CARDS GENERATOR.csv', { bookType: 'csv', type: 'bynary' });
 };
 
 function removeExcla(w) {
