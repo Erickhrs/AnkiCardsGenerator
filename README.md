@@ -1,9 +1,3 @@
 # AnkiCardsGenerator
--Projeto criado no intuito de automatizar minhas criações de cards de Inglês e Russo.                                                                                                            
--Criando automaticamente uma planilha com a palavra desejada, com no mínimo 3 exemplos da palavra e uma imagem relacionada a palavra por meio de um arquivo txt contendo as palavras desejadas.                                                                                                                             
--e no fim, apenas importar para o anki e fazer alguns ajustes finais.
-
-
-(este projeto está em andamento)
-
-
+Projeto para facilitar a criação de cartões de inglês e russo no Anki. Basta inserir as palavras desejadas em um arquivo de texto, e o sistema gera automaticamente um ARQUIVO CSV com três exemplos com palavras/expressões (no idioma escolhido (RU/EN) e traduzidas) e imagens de cada palavravra/expressão do arquvio txt. Depois, é só importar a planilha para o Anki e fazer alguns ajustes finais. Uma forma rápida e fácil de melhorar o estudo de idiomas!
+[projeto finalizado]
