@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <title>CARDS GENERATOR</title>
 </head>
+
 <body>
     </DIV>
     <div id="resultcontainer">
@@ -20,13 +21,13 @@
 
             <input type="text" name="value" placeholder="TYPE" id="typeinp">
 
-        
+
             <input type="text" name="front" placeholder="FRONT" id="frontinp">
 
-        
+
             <input type="text" name="back" placeholder="BACK" id="backinp">
 
-           
+
             <input type="text" name="image" placeholder="IMAGE" id="imageinp">
 
             <P onclick="editResult()">&#9999;&#65039</P>
@@ -35,8 +36,8 @@
     </div>
     <div id="containerinfos">
         <DIV id="infos">
-            <p id="viewelement"title="VIEW" onclick="view()">&#128065;&#65039;</p>
-            <p title="SAVE">&#128190;</p>
+            <p id="viewelement" title="VIEW" onclick="view()">&#128065;&#65039;</p>
+            <p title="DOWNLOAD" id="download" >&#128190;</p>
             <p title="DARK/LIGHT MODE" onclick="mode()">&#128294;</p>
             <p title="actionsbox" onclick="actionsbox()">&#128377;&#65039;</p>
         </DIV>
@@ -62,6 +63,9 @@
     </div>
 
     <script src="/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"
+        integrity="sha512-jDEmOIskGs/j5S3wBWQAL4pOYy3S5a0y3Vav7BgXHnCVcUBXkf1OqzYS6njmDiKyqes22QEX8GSIZZ5pGk+9nA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </body>
 
 </html>

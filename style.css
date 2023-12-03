@@ -224,3 +224,6 @@ body {
 #resultcontainer img {
     width: 100px;
 }
+#download{
+    display: none;
+}

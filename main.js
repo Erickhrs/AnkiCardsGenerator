@@ -275,11 +275,13 @@ async function imageGenerator(IDIMG) {
   //for (i = 0; i < result.length; i += 5) { images.push(result[i]) }
   var resultimg = await useApi(IDIMG);
   //console.log(resultimg.photos[Math.floor(Math.random(5)*10)].src.medium);
+  console.log(IDIMG)
   return resultimg.photos[Math.floor(Math.random() * 3)].src.medium;
 }
 
 
 async function useApi(word) {
+  console.log(word)
   try {
     const response = await fetch(`https://api.pexels.com/v1/search?query=${word}`, {
       method: 'GET',
@@ -297,6 +299,8 @@ async function useApi(word) {
     throw error;
   }
 }
+
+
 
 function russianGenerator(array) {
   let wpcounter = 0;
@@ -419,21 +423,49 @@ function russianGenerator(array) {
 
 async function translator(valor, lang, x) {
   try {
-    const response = await fetch(`https://api.mymemory.translated.net/get?q=${valor}!&langpair=${lang}|pt`);
-    const data = await response.json();
+    if (lang == "en") {
+      console.log("ENTROU EM RUSSO")
+      const response = await fetch(`https://api.mymemory.translated.net/get?q=${valor}!&langpair=${lang}|pt`);
+      const data = await response.json();
 
-    let trad = data.responseData.translatedText;
-    result[x + 2] = trad;
+      let trad = data.responseData.translatedText;
+      result[x + 2] = trad;
 
-    const imageResult = await imageGenerator(result[x - 1]);
-    result[x + 3] = `<img src=${imageResult} alt="image"></img>`;
+      const imageResult = await imageGenerator(result[x - 1]);
+      result[x + 3] = `<img src=${imageResult} alt="image"></img>`;
+      console.log("ENTROU EM INGLES")
+    }
+    if (lang == "ru") {
+      const response = await fetch(`https://api.mymemory.translated.net/get?q=${valor}!&langpair=${lang}|pt`);
+      const data = await response.json();
 
+      let trad = data.responseData.translatedText;
+      result[x + 2] = trad;
+      var tradimgtoeng = await translate_image(result[x - 1]);
+      const imageResult = await imageGenerator(tradimgtoeng);
+      result[x + 3] = `<img src=${imageResult} alt="image"></img>`;
+    }
   } catch (error) {
-    messagebox('Error:', error);
+    messagebox('Error translating:', error);
+    console.log('Error translating:', error);
   }
   errosvalidator();
 }
 
+async function translate_image(x) {
+  try {
+    const response = await fetch(`https://api.mymemory.translated.net/get?q=${x}!&langpair=ru|eng`);
+    const data = await response.json();
+
+    let trad = data.responseData.translatedText;
+    return trad;
+
+  } catch (error) {
+    messagebox('Error translating:', error);
+    console.log('Error translating:', error);
+  }
+  errosvalidator();
+}
 
 //botões infos
 function actionsbox() {
@@ -479,24 +511,28 @@ function view() {
     document.querySelector("#generator_container").style.display = "flex"
     document.querySelector("#activator_container").style.display = "none"
     document.querySelector("#resultcontainer").style.display = "none"
+    document.querySelector("#download").style.display = "none"
     //apagando tabela
     var resuttable = document.querySelector("#resuttable")
     var resultcontainer = resuttable.parentNode;
     resultcontainer.removeChild(resuttable)
+
   }
   else if (modeview === true) {
     //document.querySelector("#containerinfos").style.display = "none"
     document.querySelector("#generator_container").style.display = "none"
     document.querySelector("#activator_container").style.display = "none"
     document.querySelector("#resultcontainer").style.display = "block"
+    document.querySelector("#download").style.display = "inline-block"
     resultScreen()
   }
 }
 
 function resultScreen() {
 
-  if (result <= 2) { 
+  if (result <= 2) {
     document.querySelector("#titleresult").innerHTML = "<p>there are no results</p"
+    document.querySelector("#download").style.display = "none"
   } else {
     document.querySelector("#titleresult").innerHTML = "&#127803;results&#127803;"
     var novatabela = document.createElement("table");
@@ -545,7 +581,7 @@ function resultScreen() {
       value.textContent = result[z];
       type.textContent = result[z + 1];
       front.textContent = result[z + 2];
-      back.textContent = result[z + 3];
+      back.textContent = removeExcla(result[z + 3]);
       image.innerHTML = result[z + 4];
 
       //passando pro tr
@@ -611,3 +647,41 @@ function editResult() {
   }
 
 }
+
+document.getElementById('download').addEventListener('click', () => {
+  downloadXLSX();
+})
+
+const downloadXLSX = () => {
+  const wb = XLSX.utils.book_new();
+
+  wb.Props = {
+    Title: 'RESULT CARDS GENERATOR',
+    Subject: 'CARDS ANKI',
+    Author: 'Erick Rosa',
+    CreatedDate: new Date(),
+  };
+
+  wb.SheetNames.push('RESULT');
+
+  var dados = [
+    ['Front', 'Back', 'Image'],
+  ];
+  for (i = 0; i < result.length; i += 5) {
+    console.log("entrou")
+    var z = [result[i + 2], removeExcla(result[i + 3]), result[i + 4]]
+    dados.push(z)
+  }
+  console.log(dados)
+  const ws = XLSX.utils.aoa_to_sheet(dados);
+
+  wb.Sheets['RESULT'] = ws;
+
+  XLSX.writeFile(wb, 'RESULTS CARDS GENERATOR.xlsx', { bookType: 'xlsx', type: 'bynary' });
+};
+
+function removeExcla(w) {
+  w = w.replace(/!/g, '');
+  return w;
+}
+
