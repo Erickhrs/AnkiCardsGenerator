@@ -31,7 +31,8 @@ IMAGENS DO SISTEMA:
 ![5](https://github.com/Erickhrs/AnkiCardsGenerator/assets/106276135/dfe6211e-9891-4977-b9a7-99589d71fbcc)
 
 VIDEO EXPLICATIVO DO FUNCIONAMENTO DO SISTEMA:
-[![Watch the video]()](https://www.youtube.com/watch?v=fJd17wqcg9A)https://www.youtube.com/watch?v=fJd17wqcg9A)
+
+[![VIDEO](https://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)]([https://www.youtube.com/watch?v=YOUTUBE_VIDEO_ID_HERE](https://www.youtube.com/watch?v=fJd17wqcg9A)https://www.youtube.com/watch?v=fJd17wqcg9A)
 
 
 
