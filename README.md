@@ -32,8 +32,7 @@ IMAGENS DO SISTEMA:
 
 VIDEO EXPLICATIVO DO FUNCIONAMENTO DO SISTEMA:
 
-[![VIDEO](https://img.youtube.com/vi/fJd17wqcg9A/0.jpg)](https://www.youtube.com/watch?v=fJd17wqcg9A)
-
+[![VIDEO](https://img.youtube.com/vi/fJd17wqcg9A/0.jpg)](https://drive.google.com/file/d/1E0szpcW_EqBtPvzsfQ2v0JkJzcDmnv8z/preview)
 
 
 
